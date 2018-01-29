@@ -9,44 +9,11 @@
     #strip {
       width: 100%;
     }
-    #commandarea {
-      min-height: 100px;
-    }
-    div.block, div.subCommands {
-      padding: 10px;
-      min-height: 10px;
-    }
-    div.hover {
-      border: 3px solid green;
-    }
-    div.commandGroup {
-      background: #FFAA00;
-    }
-    .disableDrag {
-      pointer-events: none;
-    }
   </style>
 </head>
 <body>
   <canvas id="strip">
     Canvas not supported!!
   </canvas>
-  <div id="commands">
-    <div id="commandarea">
-    </div>
-    <div id="addCommandGroup" draggable="true">
-      Command Group
-    </div>
-    <div id="addCommand" draggable="true" ondragstart="drag(event)">
-      Command:
-      <select>
-        <option value="blink">Blink</option>
-        <option value="fade">Fade</option>
-        <option value="random">Random</option>
-        <option value="snake">Snake</option>
-        <option value="solid">Solid</option>
-      </select>
-    </div>
-  </div>
 </body>
 </html>
