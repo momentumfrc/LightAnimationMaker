@@ -34,6 +34,7 @@ var builder = {
         anioptions.append(builder.group());
         break;
       case "blink":
+        anioptions.append(builder.blink());
         break;
       case "fade":
         break;
@@ -42,6 +43,24 @@ var builder = {
       case "solid":
         break;
     }
+  },
+  rgbcell : function() {
+    var baseHTML = `
+    <div class="rgbbox">
+      <input type="number" min="0" max="255" class="r">
+      <input type="number" min="0" max="255" class="g">
+      <input type="number" min="0" max="255" class="b">
+      <div class="rgbdisplay"></div>
+    </div>`;
+    var elem = $($.parseHTML(baseHTML));
+    elem.find(".r,.g,.b").on("input",function(e) {
+      var rgbbox = $(e.target).closest(".rgbbox");
+      var r = rgbbox.find(".r").val();
+      var g = rgbbox.find(".g").val();
+      var b = rgbbox.find(".b").val();
+      rgbbox.find(".rgbdisplay").css("background","rgb("+r+","+g+","+b+")");
+    });
+    return elem;
   },
   group : function() {
     var baseHTML = `
@@ -66,7 +85,23 @@ var builder = {
     return elem;
   },
   blink : function() {
-
+    var baseHTML = `
+    <table>
+      <tr><th>Color</th><th>Time</th></tr>
+      <tr><td rowspan="2"><button class="addcol">Add</button></td></tr>
+    </table>
+    `;
+    var elem = $($.parseHTML(baseHTML));
+    elem.find(".addcol").click(function(e) {
+      var baseHTML = '<tr><td class="colorcell"><button class="removecolor">Delete</button></td><td><input type="number" class="colortime"></td></tr>';
+      var elem = $($.parseHTML(baseHTML));
+      elem.find(".removecolor").click(function(e) {
+        $(e.target).closest("tr").remove();
+      });
+      elem.find(".colorcell").append(builder.rgbcell());
+      $(e.target).closest("tr").before(elem);
+    });
+    return elem;
   },
   fade : function() {
 
