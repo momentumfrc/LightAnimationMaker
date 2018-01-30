@@ -6,11 +6,10 @@ var interpreter = {
         var times = [];
         animationBox.find(".animationBox").each(function() {
           var ab = $(this);
-          animations.push(inerpreter.interpret(ab));
+          animations.push(interpreter.interpret(ab));
           times.push(ab.closest("tr").find(".animationtime").val());
         });
         return new animationFactory.animationSequence(animations, times);
-        break;
       case "blink":
         var colors = [];
         var times = [];
@@ -24,16 +23,53 @@ var interpreter = {
           times.push(rb.closest("tr").find(".colortime").val());
         });
         return new animationFactory.blink(colors, times);
-        break;
       case "fade":
-        break;
+        var fadetime = animationBox.find(".fadetime").val();
+        var holdtime = animationBox.find(".holdtime").val();
+        var colors = [];
+        animationBox.find(".rgbbox").each(function() {
+          var rb = $(this);
+          colors.push(new color(
+            rb.find(".r").val(),
+            rb.find(".g").val(),
+            rb.find(".b").val()
+          ));
+        });
+        return new animationFactory.fade(colors, fadetime, holdtime);
       case "random":
-        break;
+        var delay = animationBox.find(".delay").val();
+        var repeat = animationBox.find(".repeat").val();
+        return new animationFactory.random(delay, repeat);
       case "snake":
-        break;
+        var delay = animationBox.find(".delay").val();
+        var colors = [];
+        animationBox.find(".rgbbox").each(function() {
+          var rb = $(this);
+          colors.push(new color(
+            rb.find(".r").val(),
+            rb.find(".g").val(),
+            rb.find(".b").val()
+          ));
+        });
+        return new animationFactory.snake(colors, delay);
       case "solid":
-        break;
+        var colors = [];
+        animationBox.find(".rgbbox").each(function() {
+          var rb = $(this);
+          colors.push(new color(
+            rb.find(".r").val(),
+            rb.find(".g").val(),
+            rb.find(".b").val()
+          ));
+        });
+        return new animationFactory.solid(colors);
     }
   },
 
 }
+
+$(document).ready(function(e) {
+  $("#update").click(function(e){
+    animator.setAnimation(interpreter.interpret($("#animation").find(".animationBox")));
+  });
+});
