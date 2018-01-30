@@ -37,19 +37,25 @@ var builder = {
         anioptions.append(builder.blink());
         break;
       case "fade":
+        anioptions.append(builder.fade());
         break;
       case "random":
+        anioptions.append(builder.random());
+        break;
+      case "snake":
+        anioptions.append(builder.snake());
         break;
       case "solid":
+        anioptions.append(builder.solid());
         break;
     }
   },
   rgbcell : function() {
     var baseHTML = `
     <div class="rgbbox">
-      <input type="number" min="0" max="255" class="r">
-      <input type="number" min="0" max="255" class="g">
-      <input type="number" min="0" max="255" class="b">
+      <input type="number" min="0" max="255" class="r" value="255">
+      <input type="number" min="0" max="255" class="g" value="255">
+      <input type="number" min="0" max="255" class="b" value="255">
       <div class="rgbdisplay"></div>
     </div>`;
     var elem = $($.parseHTML(baseHTML));
@@ -66,12 +72,12 @@ var builder = {
     var baseHTML = `
     <table>
       <tr><th>Animation</th><th>Time</th></tr>
-      <tr><td rowspan="2"><button class="addsuban">Add</button></td></tr>
+      <tr><td colspan="2"><button class="addsuban">Add</button></td></tr>
     </table>
     `;
     var elem = $($.parseHTML(baseHTML));
     elem.find(".addsuban").click(function(e) {
-      var baseHTML = '<tr><td class="animationcell"></td><td><input type="number" class="animationtime"></td></tr>';
+      var baseHTML = '<tr><td class="animationcell"></td><td><input type="number" class="animationtime" value="100"></td></tr>';
       var elem = $($.parseHTML(baseHTML));
       var anibox = builder.animationBox();
       anibox.find(".removeButton").off("click");
@@ -88,12 +94,12 @@ var builder = {
     var baseHTML = `
     <table>
       <tr><th>Color</th><th>Time</th></tr>
-      <tr><td rowspan="2"><button class="addcol">Add</button></td></tr>
+      <tr><td colspan="2"><button class="addcol">Add</button></td></tr>
     </table>
     `;
     var elem = $($.parseHTML(baseHTML));
     elem.find(".addcol").click(function(e) {
-      var baseHTML = '<tr><td class="colorcell"><button class="removecolor">Delete</button></td><td><input type="number" class="colortime"></td></tr>';
+      var baseHTML = '<tr><td class="colorcell"><button class="removecolor">Delete</button></td><td><input type="number" class="colortime" value="100"></td></tr>';
       var elem = $($.parseHTML(baseHTML));
       elem.find(".removecolor").click(function(e) {
         $(e.target).closest("tr").remove();
@@ -104,12 +110,77 @@ var builder = {
     return elem;
   },
   fade : function() {
-
+    var baseHTML = `
+    <p>Fadetime: <input type="number" class="fadetime" value="100"></p>
+    <p>Holdtime: <input type="number" class="holdtime" value="100"></p>
+    <table>
+      <tr><th>Color</tr></th>
+      <tr><td><button class="addcol">Add</button></td></tr>
+    </table>
+    `;
+    var elem = $($.parseHTML(baseHTML));
+    elem.find(".addcol").click(function(e) {
+      var baseHTML = '<tr><td class="colorcell"><button class="removecolor">Delete</button></td></tr>';
+      var elem = $($.parseHTML(baseHTML));
+      elem.find(".removecolor").click(function(e) {
+        $(e.target).closest("tr").remove();
+      });
+      elem.find(".colorcell").append(builder.rgbcell());
+      $(e.target).closest("tr").before(elem);
+    });
+    return elem;
   },
   random : function() {
-
+    var baseHTML = `
+    <p>Delay: <input type="number" class="delay" value="100"></p>
+    <p>Repeat: <input type="number" class="repeat" value="100"></p>
+    `;
+    var elem = $($.parseHTML(baseHTML));
+    return elem;
+  },
+  snake : function() {
+    var baseHTML = `
+    <p>Delay: <input type="number" class="delay" value="100"></p>
+    <table>
+      <tr><th>Color</tr></th>
+      <tr><td><button class="addcol">Add</button></td></tr>
+    </table>
+    `;
+    var elem = $($.parseHTML(baseHTML));
+    elem.find(".addcol").click(function(e) {
+      var baseHTML = '<tr><td class="colorcell"><button class="removecolor">Delete</button></td></tr>';
+      var elem = $($.parseHTML(baseHTML));
+      elem.find(".removecolor").click(function(e) {
+        $(e.target).closest("tr").remove();
+      });
+      elem.find(".colorcell").append(builder.rgbcell());
+      $(e.target).closest("tr").before(elem);
+    });
+    return elem;
   },
   solid : function() {
-
+    var baseHTML = `
+    <table>
+      <tr><th>Color</tr></th>
+      <tr><td><button class="addcol">Add</button></td></tr>
+    </table>
+    `;
+    var elem = $($.parseHTML(baseHTML));
+    elem.find(".addcol").click(function(e) {
+      var baseHTML = '<tr><td class="colorcell"><button class="removecolor">Delete</button></td></tr>';
+      var elem = $($.parseHTML(baseHTML));
+      elem.find(".removecolor").click(function(e) {
+        $(e.target).closest("tr").remove();
+      });
+      elem.find(".colorcell").append(builder.rgbcell());
+      $(e.target).closest("tr").before(elem);
+    });
+    return elem;
   }
 }
+
+$(document).ready(function(e) {
+  var elem = builder.animationBox();
+  elem.find(".removeButton").remove();
+  $("#animation").append(elem);
+});

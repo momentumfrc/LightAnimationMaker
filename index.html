@@ -5,6 +5,7 @@
   <script src="animator.js"></script>
   <script src="stripmanager.js"></script>
   <script src="animationBuilder.js"></script>
+  <script src="animationInterpreter.js"></script>
   <style>
     #strip {
       width: 100%;
@@ -13,6 +14,23 @@
       width: 30px;
       height: 30px;
       display: inline-block;
+      border: 1px solid gray;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    table {
+      border-collapse: collapse;
+    }
+    div.rgbbox {
+      display: inline-block;
+    }
+    div.animationbox {
+      border: 2px solid black;
+      padding: 4px;
+    }
+    div.animationbox p {
+      margin: 2px 4px;
     }
   </style>
 </head>

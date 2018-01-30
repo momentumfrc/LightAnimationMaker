@@ -25,7 +25,7 @@ var commandFactory = {
 };
 var animationFactory = {
   animationSequence: function(animations, times) {
-    if(animations.length != times.length) {
+    if(animations.length != times.length || animations.length == 0) {
       return;
     }
     this.times = times;
@@ -49,7 +49,7 @@ var animationFactory = {
     };
   },
   blink: function(colors, waittimes) {
-    if(colors.length != waittimes.length) {
+    if(colors.length != waittimes.length || colors.length == 0) {
       return;
     }
     this.colors = colors;
@@ -65,6 +65,9 @@ var animationFactory = {
     }
   },
   fade: function(colors, fadetime, holdtime) {
+    if(colors.length == 0) {
+      return;
+    }
     this.colors = colors;
     this.fadetime = fadetime;
     this.holdtime = holdtime;
@@ -121,6 +124,9 @@ var animationFactory = {
     };
   },
   snake: function(colors, delay) {
+    if(colors.length == 0) {
+      return;
+    }
     this.colors = colors;
     this.speed = delay;
     this.increment = 1;
@@ -141,6 +147,9 @@ var animationFactory = {
     };
   },
   solid: function(colors) {
+    if(colors.length == 0) {
+      return;
+    }
     this.delay = 500;
     this.colors = colors;
     this.getNextFrame = function() {
