@@ -1,7 +1,10 @@
 function color(r,g,b) {
-  this.r = r;
-  this.g = g;
-  this.b = b;
+  this.r = parseInt(r);
+  this.g = parseInt(g);
+  this.b = parseInt(b);
+  this.getRounded = function() {
+    return new color(Math.floor(this.r), Math.floor(this.g), Math.floor(this.b));
+  }
 };
 var commandFactory = {
   makeSingle: function(address, color) {
@@ -75,10 +78,10 @@ var animationFactory = {
     this.hold = false;
     this.STEPS = 50;
     this.diffCalc = {
-      color: colors,
-      diffs: new Color(0,0,0),
-      to: new Color(0,0,0),
-      CLOSE_ENOUGH: 0.005,
+      color: Object.assign({}, colors[0]),
+      diffs: new color(0,0,0),
+      to: new color(0,0,0),
+      CLOSE_ENOUGH: 0.05,
       calculateDiffs: function(to, steps) {
         this.to = to;
         this.diffs.r = (this.to.r - this.color.r) / steps;
@@ -89,21 +92,29 @@ var animationFactory = {
         this.color.r += this.diffs.r;
         this.color.g += this.diffs.g;
         this.color.b += this.diffs.b;
+
       },
       atTarget: function() {
-        return (Math.abs(this.color.r - this.to.r) < CLOSE_ENOUGH) && (Math.abs(this.color.g - this.to.g) < CLOSE_ENOUGH) && (Math.abs(this.color.b - this.to.b) < CLOSE_ENOUGH);
+        return (Math.abs(this.color.r - this.to.r) < this.CLOSE_ENOUGH) && (Math.abs(this.color.g - this.to.g) < this.CLOSE_ENOUGH) && (Math.abs(this.color.b - this.to.b) < this.CLOSE_ENOUGH);
       }
     };
-    this.diffCalc.calculateDiffs(colors[(this.i+1)%this.colors.length], this.STEPS);
+    this.diffCalc.calculateDiffs(colors[(this.idx+1)%this.colors.length], this.STEPS);
     this.getNextFrame = function() {
       this.diffCalc.applyDiffs();
       if(this.diffCalc.atTarget()) {
         this.idx = (this.idx + 1) % this.colors.length;
         this.hold = true;
-        this.diffCalc.calculateDiffs(this.colors[idx], this.STEPS);
+        this.diffCalc.calculateDiffs(this.colors[this.idx], this.STEPS);
       }
-      return [new commandFactory.makeStride(0, this.diffCalc.color, 1, 1)];
+      return [new commandFactory.makeStride(0, this.diffCalc.color.getRounded(), 1, 1)];
     };
+    this.getFrameDelayMilliseconds = function() {
+      if(this.hold) {
+        this.hold = false;
+        return this.holdtime;
+      }
+      return this.fadetime/this.STEPS;
+    }
   },
   random: function(delay, repeat) {
     this.delay = delay;
