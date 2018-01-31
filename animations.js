@@ -31,6 +31,7 @@ var animationFactory = {
     if(animations.length != times.length || animations.length == 0) {
       return;
     }
+    this.type = "sequence";
     this.times = times;
     this.animations = animations;
     this.startTime = Date.now();
@@ -55,6 +56,7 @@ var animationFactory = {
     if(colors.length != waittimes.length || colors.length == 0) {
       return;
     }
+    this.type = "blink";
     this.colors = colors;
     this.waittimes = waittimes;
     this.idx = 0;
@@ -71,6 +73,7 @@ var animationFactory = {
     if(colors.length == 0) {
       return;
     }
+    this.type = "fade";
     this.colors = colors;
     this.fadetime = fadetime;
     this.holdtime = holdtime;
@@ -117,6 +120,7 @@ var animationFactory = {
     }
   },
   random: function(delay, repeat) {
+    this.type = "random";
     this.delay = delay;
     this.repeat = repeat;
     this.randomRGB = function() {
@@ -138,6 +142,7 @@ var animationFactory = {
     if(colors.length == 0) {
       return;
     }
+    this.type = "snake";
     this.colors = colors;
     this.speed = delay;
     this.increment = 1;
@@ -161,6 +166,7 @@ var animationFactory = {
     if(colors.length == 0) {
       return;
     }
+    this.type = "solid";
     this.delay = 500;
     this.colors = colors;
     this.getNextFrame = function() {

@@ -6,6 +6,7 @@
   <script src="stripmanager.js"></script>
   <script src="animationBuilder.js"></script>
   <script src="animationInterpreter.js"></script>
+  <script src="saver.js"></script>
   <style>
     #strip {
       width: 100%;
@@ -32,6 +33,10 @@
     div.animationbox p {
       margin: 2px 4px;
     }
+    #jout {
+      display: none;
+      font-family: consolas monospace sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -41,6 +46,7 @@
   <p>Animation:</p>
   <div id="animation">
   </div>
-  <button id="update">Update</button>
+  <button id="update">Update</button><button id="javaify">Javaify</button>
+  <p id="jout"></p>
 </body>
 </html>
